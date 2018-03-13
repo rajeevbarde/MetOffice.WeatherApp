@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo", "Demo\Demo.csproj", "{BE4C5079-4B81-46BF-95B2-490512827BEE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4D6F1D1D-D3AF-4377-9146-DF752B878C17} = {4D6F1D1D-D3AF-4377-9146-DF752B878C17}
+		{292668C4-222C-4297-8CEC-C843283CC086} = {292668C4-222C-4297-8CEC-C843283CC086}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherORM", "WeatherORM\WeatherORM.csproj", "{4D6F1D1D-D3AF-4377-9146-DF752B878C17}"
+	ProjectSection(ProjectDependencies) = postProject
+		{292668C4-222C-4297-8CEC-C843283CC086} = {292668C4-222C-4297-8CEC-C843283CC086}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherShared", "WeatherShared\WeatherShared.csproj", "{292668C4-222C-4297-8CEC-C843283CC086}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherLoader", "WeatherLoader\WeatherLoader.csproj", "{9265EAA4-B821-4249-B027-49DB0C4511E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B2F56EB-8207-44A9-A995-2AB4D2A75E50}"
+	ProjectSection(SolutionItems) = preProject
+		TODO.txt = TODO.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE4C5079-4B81-46BF-95B2-490512827BEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE4C5079-4B81-46BF-95B2-490512827BEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE4C5079-4B81-46BF-95B2-490512827BEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE4C5079-4B81-46BF-95B2-490512827BEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D6F1D1D-D3AF-4377-9146-DF752B878C17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D6F1D1D-D3AF-4377-9146-DF752B878C17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D6F1D1D-D3AF-4377-9146-DF752B878C17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D6F1D1D-D3AF-4377-9146-DF752B878C17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{292668C4-222C-4297-8CEC-C843283CC086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{292668C4-222C-4297-8CEC-C843283CC086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{292668C4-222C-4297-8CEC-C843283CC086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292668C4-222C-4297-8CEC-C843283CC086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9265EAA4-B821-4249-B027-49DB0C4511E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9265EAA4-B821-4249-B027-49DB0C4511E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9265EAA4-B821-4249-B027-49DB0C4511E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9265EAA4-B821-4249-B027-49DB0C4511E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {764B283A-92C0-4685-B94B-700C8D173E57}
+	EndGlobalSection
+EndGlobal

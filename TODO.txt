@@ -1,0 +1,6 @@
+Implement Serilog
+return values
+better comments & documentation
+refactor 
+unit test
+asp.net core configuration json
