@@ -8,9 +8,18 @@ using WeatherShared;
 
 namespace WeatherLoader
 {
+    /// <summary>
+    /// Parse the Weather's data from the downloaded file
+    /// </summary>
     public static class WeatherParser
     {
-        public static bool isNewFile(string fileName, WeatherDB wdb)
+        /// <summary>
+        /// Verify if the downloaded file is latest or old.
+        /// </summary>
+        /// <param name="fileName">Name of the file which is verified</param>
+        /// <param name="wdb">The database object. It is needed for persistent connection</param>
+        /// <returns>result of file verification</returns>
+        public static bool isLatestFile(string fileName, WeatherDB wdb)
         {
             IEnumerable<string> TextLines = File.ReadLines(WeatherDownload.filepath + fileName);
 
@@ -43,6 +52,13 @@ namespace WeatherLoader
 
         }
 
+        /// <summary>
+        /// Format the weather data from text file in class object.
+        /// </summary>
+        /// <param name="fileName">Name of the file which needs to be formatted</param>
+        /// <param name="ct">The climate type filter</param>
+        /// <param name="region">The Region filter</param>
+        /// <returns>List of data in WeatherDataEntity</returns>
         public static List<WeatherDataEntity> FormatWeatherData(string fileName,ClimateType ct, Region region)
         {
             IEnumerable<string> TextLines = File.ReadLines(WeatherDownload.filepath + fileName);

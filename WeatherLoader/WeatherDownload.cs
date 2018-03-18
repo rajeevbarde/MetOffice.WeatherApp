@@ -5,12 +5,21 @@ using WeatherShared;
 
 namespace WeatherLoader
 {
+    /// <summary>
+    /// Download weather data from MetOffice
+    /// </summary>
     public static class WeatherDownload
     {
         public static string filepath = "./";
         public static string filename = "country.txt";
         public static string baseURL = @"https://www.metoffice.gov.uk/pub/data/weather/uk/climate/datasets";
 
+        /// <summary>
+        /// Download the climate file based on region and climate type
+        /// </summary>
+        /// <param name="region">Name of region to be downloaded</param>
+        /// <param name="climateType">Climate type that needs to be downloaded</param>
+        /// <returns>Download status</returns>
         public static bool Download(Region region, ClimateType climateType)
         {
             string URL = getWebURL(region, climateType);
@@ -38,6 +47,10 @@ namespace WeatherLoader
             return isDownloaded;
         }
 
+        /// <summary>
+        /// Download all the data from MetOffice
+        /// </summary>
+        /// <returns>Download status</returns>
         public static bool DownloadAll()
         {
             try
@@ -57,6 +70,12 @@ namespace WeatherLoader
             return true;
         }
 
+        /// <summary>
+        /// Generate URL for MetOffice data based on region and climate type.
+        /// </summary>
+        /// <param name="region">Name of region to be downloaded</param>
+        /// <param name="climateType">Climate type that needs to be downloaded</param>
+        /// <returns>URL string of the data</returns>
         public static string getWebURL(Region region, ClimateType climateType)
         {
             string climateTypeURL = FileDownloadHelper.getTypeURLPart(climateType);

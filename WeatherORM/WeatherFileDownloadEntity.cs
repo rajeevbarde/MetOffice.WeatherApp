@@ -4,6 +4,9 @@ using WeatherShared;
 
 namespace WeatherORM
 {
+    /// <summary>
+    /// Database table "WeatherFileDownload" class
+    /// </summary>
     [Table("WeatherFileDownload")]
     class WeatherFileDownloadEntity
     {

@@ -1,6 +1,8 @@
 Implement Serilog
-return values
-better comments & documentation
+[Done] return values 
+[Done] better comments & documentation
 refactor 
 unit test
+pack & deploy
+-------
 asp.net core configuration json

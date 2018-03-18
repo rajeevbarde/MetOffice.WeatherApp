@@ -8,19 +8,8 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="Dapper.Contrib" Version="1.50.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="WeatherLoader">
-      <HintPath>..\WeatherLoader\bin\Debug\netcoreapp2.0\WeatherLoader.dll</HintPath>
-    </Reference>
-    <Reference Include="WeatherORM">
-      <HintPath>..\WeatherORM\bin\Debug\netcoreapp2.0\WeatherORM.dll</HintPath>
-    </Reference>
-    <Reference Include="WeatherShared">
-      <HintPath>..\WeatherShared\bin\Debug\netcoreapp2.0\WeatherShared.dll</HintPath>
-    </Reference>
+      <ProjectReference Include="..\WeatherORM\WeatherORM.csproj" />
+      <ProjectReference Include="..\WeatherLoader\WeatherLoader.csproj" />
   </ItemGroup>
 
 </Project>

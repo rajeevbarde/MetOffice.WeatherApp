@@ -5,16 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Enum.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="WeatherORM">
-      <HintPath>..\WeatherORM\bin\Debug\netcoreapp2.0\WeatherORM.dll</HintPath>
-    </Reference>
-    <Reference Include="WeatherShared">
-      <HintPath>..\WeatherShared\bin\Debug\netcoreapp2.0\WeatherShared.dll</HintPath>
-    </Reference>
+      <ProjectReference Include="..\WeatherShared\WeatherShared.csproj" />
+      <ProjectReference Include="..\WeatherORM\WeatherORM.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,10 @@ using Dapper.Contrib.Extensions;
 using WeatherShared;
 
 namespace WeatherORM
-{    
+{
+    /// <summary>
+    /// Database table "WeatherData" class
+    /// </summary>
     [Table("WeatherData")]
     public class WeatherDataEntity
     {

@@ -1,14 +1,34 @@
-﻿using System;
-
-namespace WeatherShared
+﻿namespace WeatherShared
 {
+    /// <summary>
+    /// MetOffice Region
+    /// </summary>
     public enum Region
     {
-        UK, England, Wales, Scotland
+        ///<summary>United Kingdom</summary>
+        UK,
+        ///<summary>England</summary>
+        England,
+        ///<summary>Wales</summary>
+        Wales,
+        ///<summary>Scotland</summary>
+        Scotland
     };
 
+    /// <summary>
+    /// Region's climate types
+    /// </summary>
     public enum ClimateType
     {
-        max, min, mean, sunshine, rainfall
+        ///<summary>Maximum Temperature</summary>
+        max,
+        ///<summary>Minimum Temperature</summary>
+        min,
+        ///<summary>Mean Temperature</summary>
+        mean,
+        ///<summary>Sunshine details</summary>
+        sunshine,
+        ///<summary>Rainfall details</summary>
+        rainfall
     };
 }
