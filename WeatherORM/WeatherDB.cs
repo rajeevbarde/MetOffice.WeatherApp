@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using WeatherShared;
+using Serilog;
 
 namespace WeatherORM
-{
+{    
     /// <summary>
     /// ORM class containing database operations.
     /// </summary>
@@ -15,19 +16,38 @@ namespace WeatherORM
     {
         public static readonly string connString = @"Data Source=(localdb)\MSSQLLocalDB;Database=MetOfficeDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public IDbConnection connection;
+        static readonly ILogger Log = Logger.Initialize();
 
         public WeatherDB(IDbConnection IDBcon)
         {
-            if (IDBcon is SqlConnection)
-                connection = new SqlConnection(connString);
+            try
+            {
+                if (IDBcon is SqlConnection)
+                    connection = new SqlConnection(connString);
 
-            connection.Open();
+                connection.Open();
+
+                Log.Information("Database connection created");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, " : error");
+            }
         }
 
         public WeatherDB()
         {
-            connection = new SqlConnection(connString);
-            connection.Open();
+            try
+            {
+                connection = new SqlConnection(connString);
+                connection.Open();
+
+                Log.Information("Database connection created");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, " : error");
+            }
         }
 
         /// <summary>
@@ -36,7 +56,7 @@ namespace WeatherORM
         /// <param name="wd">Row data which needs to be inserted</param>
         /// <returns>identity id of the record inserted</returns>
         public long Insert(WeatherDataEntity wd)
-        {
+        {            
             long id = -1;
             try
             {
@@ -44,7 +64,7 @@ namespace WeatherORM
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Error(e, " : error");
             }
 
             return id;
@@ -55,16 +75,40 @@ namespace WeatherORM
         /// </summary>
         /// <param name="wd">Row data which needs to be updated</param>
         /// <returns>record update status</returns>
-        public bool Update(WeatherDataEntity wd)
+        public bool Update(int id, WeatherDataEntity wd)
         {
             bool isUpdated = false;
             try
             {
-                isUpdated = connection.Update<WeatherDataEntity>(wd);
+                //isUpdated = connection.Update<WeatherDataEntity>(wd);
+                string sql = $@"UPDATE WeatherData
+                               SET 
+                              [Annual] = {wd.Annual}
+                              ,[April] = {wd.April}
+                              ,[August] = {wd.August}
+                              ,[Autumn] = {wd.Autumn}
+                              ,[December]= {wd.December}
+                              ,[February]= {wd.February}
+                              ,[January]= {wd.January}
+                              ,[July]= {wd.July}
+                              ,[June]= {wd.June}
+                              ,[March]= {wd.March}
+                              ,[May]= {wd.May}
+                              ,[November]= {wd.November}
+                              ,[October]= {wd.October}
+                              ,[September]= {wd.September}
+                              ,[Spring]= {wd.Spring}
+                              ,[Summer]= {wd.Summer}
+                              ,[Winter]= {wd.Winter}
+                               WHERE WeatherDataId = {id}";
+
+                var affectedRows = connection.Execute(sql);
+                isUpdated = true;
+
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Error(e, " : error");
             }
 
             return isUpdated;
@@ -77,17 +121,21 @@ namespace WeatherORM
         /// <returns>record exist  status</returns>
         public bool RecordExist(WeatherDataEntity wd)
         {
-            WeatherDataEntity data;
+            bool isExist = false;
             try
             {
-                string sql1 = @"SELECT TOP 1 * FROM WeatherData WHERE ClimateType = @ct AND Region = @rg AND year = @yr";                
-                data = connection.QuerySingle<WeatherDataEntity>(sql1, new { ct = wd.ClimateType, rg = wd.Region, yr = wd.Year });                
+                string sql1 = $"SELECT TOP 1 * FROM WeatherData WHERE ClimateType = {(int)wd.ClimateType} AND Region = {(int)wd.Region} AND year = {wd.Year}";
+                int count = connection.Query<dynamic>(sql1).AsList().Count;
+
+                if (count > 0)
+                    isExist = true;
             }
             catch (Exception e)
             {
+                Log.Error(e, " : error");
                 return false;
             }
-            return true;
+                return isExist;
         }
 
         /// <summary>
@@ -97,6 +145,7 @@ namespace WeatherORM
         /// <returns>record match  status</returns>
         private bool matchRecord(WeatherDataEntity wd)
         {
+            bool isMatch = false;
             try
             {
                 string sql1 = @"SELECT TOP 1 * FROM WeatherData WHERE ClimateType = @ClimateType AND Region = @Region AND year = @year";
@@ -119,11 +168,15 @@ namespace WeatherORM
                     newRecord.Spring == wd.Spring &&
                     newRecord.Summer == wd.Summer &&
                     newRecord.Winter == wd.Winter)
+
                     return true;
             }
-            catch (Exception e) { }
+            catch (Exception e)
+            {
+                Log.Error(e, " : error");
+            }
 
-            return false;
+            return isMatch;
         }
 
         /// <summary>
@@ -133,6 +186,8 @@ namespace WeatherORM
         /// <returns>Dictionary containing count of inserted, update and no change</returns>
         public Dictionary<string, int> BulkInsertOrUpdate(List<WeatherDataEntity> wd)
         {
+            Log.Information("Insert or update begin");
+
             Dictionary<string, int> count = new Dictionary<string, int>();
             count["insert"] = 0;
             count["update"] = 0;
@@ -148,11 +203,12 @@ namespace WeatherORM
                 }
                 else
                 {
-                    bool isMatch = matchRecord(item);
-
+                    bool isMatch = matchRecord(item);                    
                     if (!isMatch)
                     {
-                        bool isUpdated = this.Update(item);
+                        Log.Information($" Not a match ");
+                        int weatherID = getWeatherID(item);
+                        bool isUpdated = this.Update(weatherID, item);
                         if(isUpdated)
                             count["update"]++;
                     }
@@ -161,6 +217,14 @@ namespace WeatherORM
 
             count["nochange"] = wd.Count - (count["insert"] + count["update"]);
             return count;
+        }
+
+        private int getWeatherID(WeatherDataEntity item)
+        {
+            string sql1 = $@"SELECT TOP 1 * FROM WeatherData WHERE ClimateType = {(int)item.ClimateType} AND Region = {(int)item.Region} AND year = {item.Year}";
+            WeatherDataEntity newRecord = connection.QuerySingle<WeatherDataEntity>(sql1);
+
+            return newRecord.WeatherDataId;
         }
 
         /// <summary>
@@ -189,8 +253,12 @@ namespace WeatherORM
                     }
 
                 isReset = true;
+
+                Log.Information("File download table is reset");
             }
-            catch (Exception e) { }
+            catch (Exception e) {
+                Log.Error(e, " : error");
+            }
 
             return isReset;
         }
@@ -223,7 +291,10 @@ namespace WeatherORM
                 var affectedRows = connection.Execute(sql, new { ts = DateTime.Now, fn = filename });
                 isUpdated = true;
             }
-            catch (Exception e) { }
+            catch (Exception e)
+            {
+                Log.Error(e, " : error");
+            }
 
             return isUpdated;
         }
@@ -240,9 +311,12 @@ namespace WeatherORM
             {
                 string sql = $"TRUNCATE TABLE {table}";
                 var affectedRows = connection.Execute(sql);
-                isTruncated = true;
+                isTruncated = true;                
             }
-            catch (Exception e) { }
+            catch (Exception e)
+            {
+                Log.Error(e, " : error");
+            }
 
             return isTruncated;
         }

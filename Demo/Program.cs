@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using WeatherLoader;
-using WeatherORM;
 using WeatherShared;
 
 namespace Demo
@@ -11,7 +10,9 @@ namespace Demo
         static void Main(string[] args)
         {
             ClimateLoader.InitialLoad();
-            Console.ReadLine();
+
+            Console.WriteLine("Done !");
+            Console.ReadLine();            
         }
     }
 }

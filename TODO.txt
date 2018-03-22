@@ -1,8 +1,10 @@
-Implement Serilog
+[Done] Implement Serilog
 [Done] return values 
 [Done] better comments & documentation
 refactor 
 unit test
 pack & deploy
--------
-asp.net core configuration json
+config file
+
+------
+CI/CD

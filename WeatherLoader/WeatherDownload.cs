@@ -2,6 +2,7 @@
 using System.Net;
 using System.IO;
 using WeatherShared;
+using Serilog;
 
 namespace WeatherLoader
 {
@@ -13,6 +14,7 @@ namespace WeatherLoader
         public static string filepath = "./";
         public static string filename = "country.txt";
         public static string baseURL = @"https://www.metoffice.gov.uk/pub/data/weather/uk/climate/datasets";
+        static readonly ILogger Log = Logger.Initialize();
 
         /// <summary>
         /// Download the climate file based on region and climate type
@@ -35,10 +37,12 @@ namespace WeatherLoader
 
                 filename = FileDownloadHelper.getDBFileName(climateType, region);
                 File.WriteAllText(filepath + filename, txtData);
+
+                Log.Information($"{filename} got downloaded");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Error(e, " : error");
             }
             
             if (txtData != String.Empty)
@@ -58,13 +62,12 @@ namespace WeatherLoader
                 foreach (Region region in Enum.GetValues(typeof(Region)))
                     foreach (ClimateType ct in Enum.GetValues(typeof(ClimateType)))
                     {
-                        bool isDownloaded = Download(region, ct);
-                        Console.WriteLine(region.ToString() + " " + ct.ToString() + ":" + isDownloaded);
+                        bool isDownloaded = Download(region, ct);                        
                     }
             }
             catch (Exception e)
             {
-                return false;
+                Log.Error(e, " : error");
             }
 
             return true;

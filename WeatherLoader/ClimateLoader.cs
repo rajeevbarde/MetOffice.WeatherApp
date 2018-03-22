@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using WeatherORM;
@@ -11,6 +12,8 @@ namespace WeatherLoader
     /// </summary>
     public static class ClimateLoader
     {
+        static readonly ILogger Log = Logger.Initialize();
+
         /// <summary>
         /// Reset entire database and Load data
         /// </summary>
@@ -39,7 +42,14 @@ namespace WeatherLoader
                     if (isLatestFile)
                     {
                         var list = WeatherParser.FormatWeatherData(filename, ct, region); // Parse the latest file into WeatherDataEntity
+
+                        Log.Information($"\n Loading  : {ct} , {region}");
                         var count = wdb.BulkInsertOrUpdate(list); //Insert or Update data
+
+                        Log.Information(count["insert"] + " inserted");
+                        Log.Information(count["update"] + " updated");
+                        Log.Information(count["nochange"] + " no change");
+
                         wdb.UpdateFileTimeStamp(filename);
                     }
                 }            
